@@ -17,7 +17,7 @@ const Index = () => {
           </p>
           <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
             <Link 
-              to="/dashboard" 
+              to="/home" 
               className="btn-primary inline-flex items-center gap-2 text-lg"
             >
               Get Started <ArrowRight size={18} />
@@ -34,40 +34,60 @@ const Index = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Feature 1 */}
-          <div className="dashboard-card flex flex-col items-center text-center animate-fade-in" style={{ animationDelay: "300ms" }}>
+          <Link 
+            to="/transactions" 
+            className="dashboard-card flex flex-col items-center text-center animate-fade-in transition-transform hover:scale-105 hover:shadow-lg hover:shadow-fiscal-purple-500/20" 
+            style={{ animationDelay: "300ms" }}
+          >
             <div className="w-16 h-16 bg-fiscal-purple-600/20 rounded-full flex items-center justify-center mb-4">
               <Wallet className="w-8 h-8 text-fiscal-purple-400" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Track Expenses</h3>
             <p className="text-gray-300">Log your transactions and see where your money is going</p>
-          </div>
+          </Link>
           
           {/* Feature 2 */}
-          <div className="dashboard-card flex flex-col items-center text-center animate-fade-in" style={{ animationDelay: "400ms" }}>
+          <Link 
+            to="/analytics" 
+            className="dashboard-card flex flex-col items-center text-center animate-fade-in transition-transform hover:scale-105 hover:shadow-lg hover:shadow-fiscal-purple-500/20" 
+            style={{ animationDelay: "400ms" }}
+          >
             <div className="w-16 h-16 bg-fiscal-purple-600/20 rounded-full flex items-center justify-center mb-4">
               <BarChart3 className="w-8 h-8 text-fiscal-purple-400" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Smart Analytics</h3>
             <p className="text-gray-300">Get insights with detailed spending reports and visualizations</p>
-          </div>
+          </Link>
           
           {/* Feature 3 */}
-          <div className="dashboard-card flex flex-col items-center text-center animate-fade-in" style={{ animationDelay: "500ms" }}>
+          <Link 
+            to="/home" 
+            className="dashboard-card flex flex-col items-center text-center animate-fade-in transition-transform hover:scale-105 hover:shadow-lg hover:shadow-fiscal-purple-500/20" 
+            style={{ animationDelay: "500ms" }}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/home?openChatbot=true";
+            }}
+          >
             <div className="w-16 h-16 bg-fiscal-purple-600/20 rounded-full flex items-center justify-center mb-4">
               <MessageSquare className="w-8 h-8 text-fiscal-purple-400" />
             </div>
             <h3 className="text-xl font-semibold mb-2">AI Assistant</h3>
             <p className="text-gray-300">Ask questions and get personalized financial advice</p>
-          </div>
+          </Link>
           
           {/* Feature 4 */}
-          <div className="dashboard-card flex flex-col items-center text-center animate-fade-in" style={{ animationDelay: "600ms" }}>
+          <Link 
+            to="/settings" 
+            className="dashboard-card flex flex-col items-center text-center animate-fade-in transition-transform hover:scale-105 hover:shadow-lg hover:shadow-fiscal-purple-500/20" 
+            style={{ animationDelay: "600ms" }}
+          >
             <div className="w-16 h-16 bg-fiscal-purple-600/20 rounded-full flex items-center justify-center mb-4">
               <LockKeyhole className="w-8 h-8 text-fiscal-purple-400" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Secure & Private</h3>
             <p className="text-gray-300">Your financial data stays private and protected</p>
-          </div>
+          </Link>
         </div>
       </div>
 
