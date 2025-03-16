@@ -13,7 +13,11 @@ import {
   Gift, 
   ShoppingBag, 
   Coffee, 
-  Home 
+  Home,
+  Utensils,
+  Smartphone,
+  BookOpen,
+  Music
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import TransactionForm from '../transactions/TransactionForm';
@@ -21,60 +25,61 @@ import TransactionForm from '../transactions/TransactionForm';
 const Dashboard = () => {
   const [showTransactionForm, setShowTransactionForm] = useState(false);
 
-  // Mock data
+  // Mock data with Indian Rupees
   const balanceData = {
-    currentBalance: 3240.50,
-    income: 5200,
-    expenses: 1959.50,
-    savingsGoal: 10000,
-    savings: 2500
+    currentBalance: 15420.50,
+    income: 25000,
+    expenses: 9579.50,
+    savingsGoal: 50000,
+    savings: 12500
   };
 
   const spendingData = [
-    { name: 'Housing', value: 800, color: '#8b5cf6' },
-    { name: 'Food', value: 350, color: '#06b6d4' },
-    { name: 'Transportation', value: 250, color: '#f43f5e' },
-    { name: 'Entertainment', value: 200, color: '#fb923c' },
-    { name: 'Shopping', value: 150, color: '#34d399' },
-    { name: 'Other', value: 209.50, color: '#94a3b8' }
+    { name: 'Rent/PG', value: 5000, color: '#8b5cf6' },
+    { name: 'Food & Dining', value: 1800, color: '#06b6d4' },
+    { name: 'Transport', value: 800, color: '#f43f5e' },
+    { name: 'Entertainment', value: 1200, color: '#fb923c' },
+    { name: 'Shopping', value: 500, color: '#34d399' },
+    { name: 'Other', value: 279.50, color: '#94a3b8' }
   ];
 
   const monthlyData = [
-    { month: 'Jan', income: 4800, expenses: 1800 },
-    { month: 'Feb', income: 4900, expenses: 1900 },
-    { month: 'Mar', income: 5000, expenses: 1700 },
-    { month: 'Apr', income: 5100, expenses: 1800 },
-    { month: 'May', income: 5200, expenses: 1959.50 },
+    { month: 'Jan', income: 23000, expenses: 8500 },
+    { month: 'Feb', income: 23500, expenses: 9000 },
+    { month: 'Mar', income: 24000, expenses: 8200 },
+    { month: 'Apr', income: 24500, expenses: 8800 },
+    { month: 'May', income: 25000, expenses: 9579.50 },
     { month: 'Jun', income: 0, expenses: 0 },
   ];
 
   const recentTransactions = [
-    { id: 1, name: 'Rent Payment', amount: -800, category: 'Housing', date: '2023-05-01', icon: Home },
-    { id: 2, name: 'Grocery Shopping', amount: -120, category: 'Food', date: '2023-05-03', icon: ShoppingBag },
-    { id: 3, name: 'Salary', amount: 5200, category: 'Income', date: '2023-05-05', icon: DollarSign },
-    { id: 4, name: 'Coffee Shop', amount: -15, category: 'Food', date: '2023-05-07', icon: Coffee },
-    { id: 5, name: 'Online Purchase', amount: -65, category: 'Shopping', date: '2023-05-10', icon: CreditCard },
+    { id: 1, name: 'PG Rent', amount: -5000, category: 'Housing', date: '2023-05-01', icon: Home },
+    { id: 2, name: 'Swiggy Order', amount: -450, category: 'Food', date: '2023-05-03', icon: Utensils },
+    { id: 3, name: 'Stipend', amount: 25000, category: 'Income', date: '2023-05-05', icon: DollarSign },
+    { id: 4, name: 'Cafe Coffee Day', amount: -280, category: 'Food', date: '2023-05-07', icon: Coffee },
+    { id: 5, name: 'Myntra Purchase', amount: -1200, category: 'Shopping', date: '2023-05-10', icon: ShoppingBag },
   ];
 
   const upcomingBills = [
-    { id: 1, name: 'Internet Bill', amount: 70, dueDate: '2023-06-15' },
-    { id: 2, name: 'Phone Bill', amount: 45, dueDate: '2023-06-20' },
-    { id: 3, name: 'Electricity', amount: 120, dueDate: '2023-06-25' },
+    { id: 1, name: 'Mobile Recharge', amount: 349, dueDate: '2023-06-15' },
+    { id: 2, name: 'Netflix Subscription', amount: 199, dueDate: '2023-06-20' },
+    { id: 3, name: 'Electricity Bill', amount: 850, dueDate: '2023-06-25' },
   ];
 
-  // Helper function to format currency
+  // Helper function to format currency in Indian Rupees
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
     }).format(amount);
   };
 
   // Format date helper
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat('en-IN', {
       month: 'short',
       day: 'numeric'
     }).format(date);

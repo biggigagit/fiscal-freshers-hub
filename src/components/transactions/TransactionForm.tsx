@@ -17,8 +17,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ isOpen, onClose }) =>
   const { toast } = useToast();
 
   const categories = {
-    expense: ['Housing', 'Food', 'Transportation', 'Entertainment', 'Shopping', 'Utilities', 'Health', 'Education', 'Travel', 'Other'],
-    income: ['Salary', 'Freelance', 'Investments', 'Gifts', 'Refunds', 'Other']
+    expense: ['Rent/PG', 'Food & Dining', 'Transport', 'Entertainment', 'Shopping', 'Mobile & Internet', 'Education', 'Subscriptions', 'Health', 'Other'],
+    income: ['Salary/Stipend', 'Freelance', 'Pocket Money', 'Gifts', 'Scholarships', 'Other']
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -102,7 +102,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ isOpen, onClose }) =>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <DollarSign size={18} className="text-gray-400" />
+                <span className="text-gray-400">₹</span>
               </div>
               <input
                 id="amount"

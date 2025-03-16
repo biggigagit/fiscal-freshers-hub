@@ -25,17 +25,17 @@ import { Calendar, TrendingUp, ArrowUpRight, ArrowDownRight } from 'lucide-react
 // Mock prediction data
 const predictionData = {
   nextMonth: {
-    predictedExpenses: 2100,
-    predictedIncome: 5300,
-    savingsPotential: 3200,
+    predictedExpenses: 10250,
+    predictedIncome: 25500,
+    savingsPotential: 15250,
     confidence: 85,
     expenseBreakdown: [
-      { category: 'Housing', amount: 800, change: 0 },
-      { category: 'Food', amount: 380, change: 8.6 },
-      { category: 'Transportation', amount: 270, change: 8 },
-      { category: 'Entertainment', amount: 210, change: 5 },
-      { category: 'Shopping', amount: 180, change: 20 },
-      { category: 'Other', amount: 260, change: 24.1 }
+      { category: 'Rent/PG', amount: 5000, change: 0 },
+      { category: 'Food & Dining', amount: 1950, change: 8.3 },
+      { category: 'Transport', amount: 850, change: 6.2 },
+      { category: 'Entertainment', amount: 1280, change: 6.7 },
+      { category: 'Shopping', amount: 600, change: 20 },
+      { category: 'Other', amount: 570, change: 104 }
     ]
   }
 };
@@ -46,68 +46,68 @@ const AnalyticsView = () => {
   // Mock data
   const monthlyData = {
     '3month': [
-      { month: 'Mar', income: 5000, expenses: 1700, savings: 3300 },
-      { month: 'Apr', income: 5100, expenses: 1800, savings: 3300 },
-      { month: 'May', income: 5200, expenses: 1960, savings: 3240 },
+      { month: 'Mar', income: 24000, expenses: 8200, savings: 15800 },
+      { month: 'Apr', income: 24500, expenses: 8800, savings: 15700 },
+      { month: 'May', income: 25000, expenses: 9580, savings: 15420 },
     ],
     '6month': [
-      { month: 'Dec', income: 4700, expenses: 1600, savings: 3100 },
-      { month: 'Jan', income: 4800, expenses: 1800, savings: 3000 },
-      { month: 'Feb', income: 4900, expenses: 1900, savings: 3000 },
-      { month: 'Mar', income: 5000, expenses: 1700, savings: 3300 },
-      { month: 'Apr', income: 5100, expenses: 1800, savings: 3300 },
-      { month: 'May', income: 5200, expenses: 1960, savings: 3240 },
+      { month: 'Dec', income: 22500, expenses: 7800, savings: 14700 },
+      { month: 'Jan', income: 23000, expenses: 8500, savings: 14500 },
+      { month: 'Feb', income: 23500, expenses: 9000, savings: 14500 },
+      { month: 'Mar', income: 24000, expenses: 8200, savings: 15800 },
+      { month: 'Apr', income: 24500, expenses: 8800, savings: 15700 },
+      { month: 'May', income: 25000, expenses: 9580, savings: 15420 },
     ],
     '1year': [
-      { month: 'Jun', income: 4200, expenses: 1500, savings: 2700 },
-      { month: 'Jul', income: 4200, expenses: 1600, savings: 2600 },
-      { month: 'Aug', income: 4300, expenses: 1700, savings: 2600 },
-      { month: 'Sep', income: 4400, expenses: 1600, savings: 2800 },
-      { month: 'Oct', income: 4500, expenses: 1500, savings: 3000 },
-      { month: 'Nov', income: 4600, expenses: 1600, savings: 3000 },
-      { month: 'Dec', income: 4700, expenses: 1600, savings: 3100 },
-      { month: 'Jan', income: 4800, expenses: 1800, savings: 3000 },
-      { month: 'Feb', income: 4900, expenses: 1900, savings: 3000 },
-      { month: 'Mar', income: 5000, expenses: 1700, savings: 3300 },
-      { month: 'Apr', income: 5100, expenses: 1800, savings: 3300 },
-      { month: 'May', income: 5200, expenses: 1960, savings: 3240 },
+      { month: 'Jun', income: 20000, expenses: 7500, savings: 12500 },
+      { month: 'Jul', income: 20000, expenses: 7800, savings: 12200 },
+      { month: 'Aug', income: 20500, expenses: 8200, savings: 12300 },
+      { month: 'Sep', income: 21000, expenses: 7800, savings: 13200 },
+      { month: 'Oct', income: 21500, expenses: 7500, savings: 14000 },
+      { month: 'Nov', income: 22000, expenses: 7600, savings: 14400 },
+      { month: 'Dec', income: 22500, expenses: 7800, savings: 14700 },
+      { month: 'Jan', income: 23000, expenses: 8500, savings: 14500 },
+      { month: 'Feb', income: 23500, expenses: 9000, savings: 14500 },
+      { month: 'Mar', income: 24000, expenses: 8200, savings: 15800 },
+      { month: 'Apr', income: 24500, expenses: 8800, savings: 15700 },
+      { month: 'May', income: 25000, expenses: 9580, savings: 15420 },
     ]
   };
 
   const categoryData = [
-    { category: 'Housing', amount: 800, percentage: 41 },
-    { category: 'Food', amount: 350, percentage: 18 },
-    { category: 'Transportation', amount: 250, percentage: 13 },
-    { category: 'Entertainment', amount: 200, percentage: 10 },
-    { category: 'Shopping', amount: 150, percentage: 8 },
-    { category: 'Other', amount: 210, percentage: 10 }
+    { category: 'Rent/PG', amount: 5000, percentage: 52 },
+    { category: 'Food & Dining', amount: 1800, percentage: 19 },
+    { category: 'Transport', amount: 800, percentage: 8 },
+    { category: 'Entertainment', amount: 1200, percentage: 13 },
+    { category: 'Shopping', amount: 500, percentage: 5 },
+    { category: 'Other', amount: 280, percentage: 3 }
   ];
 
   const savingsTrendData = [
-    { month: 'Dec', amount: 3100 },
-    { month: 'Jan', amount: 3000 },
-    { month: 'Feb', amount: 3000 },
-    { month: 'Mar', amount: 3300 },
-    { month: 'Apr', amount: 3300 },
-    { month: 'May', amount: 3240 },
+    { month: 'Dec', amount: 14700 },
+    { month: 'Jan', amount: 14500 },
+    { month: 'Feb', amount: 14500 },
+    { month: 'Mar', amount: 15800 },
+    { month: 'Apr', amount: 15700 },
+    { month: 'May', amount: 15420 },
   ];
 
   const COLORS = ['#8b5cf6', '#06b6d4', '#f43f5e', '#fb923c', '#34d399', '#94a3b8'];
 
   const spendingHabitsData = [
-    { subject: 'Morning', amount: 350 },
-    { subject: 'Afternoon', amount: 530 },
-    { subject: 'Evening', amount: 800 },
-    { subject: 'Night', amount: 280 },
-    { subject: 'Weekend', amount: 980 },
-    { subject: 'Weekday', amount: 1750 },
+    { subject: 'Morning', amount: 1200 },
+    { subject: 'Afternoon', amount: 1800 },
+    { subject: 'Evening', amount: 2500 },
+    { subject: 'Night', amount: 1500 },
+    { subject: 'Weekend', amount: 3800 },
+    { subject: 'Weekday', amount: 5780 },
   ];
 
-  // Helper function to format currency
+  // Helper function to format currency in Indian Rupees
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-IN', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'INR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(amount);
