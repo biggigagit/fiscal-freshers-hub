@@ -1,7 +1,7 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Bot, User, ChevronDown, PanelRight, Loader2 } from 'lucide-react';
+import { X, Send, Bot, User, ChevronDown, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface ChatbotProps {
   isOpen: boolean;
@@ -13,6 +13,18 @@ interface Message {
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+}
+
+interface SerperResponse {
+  organic: Array<{
+    title: string;
+    link: string;
+    snippet: string;
+  }>;
+  answerBox?: {
+    answer?: string;
+    snippet?: string;
+  };
 }
 
 const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
@@ -28,6 +40,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [minimized, setMinimized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   // Sample suggestions
   const suggestions = [
@@ -35,7 +48,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
     "What's the 50/30/20 budget rule?",
     "How to reduce my monthly expenses?",
     "Explain emergency funds",
-    "Best investment strategies for beginners?"
+    "Best investment strategies for beginners in India?"
   ];
 
   useEffect(() => {
@@ -46,26 +59,73 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const generateBotResponse = (userMessage: string): Promise<string> => {
-    // Simulate API call delay
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Mock responses based on keywords
-        if (userMessage.toLowerCase().includes('save') || userMessage.toLowerCase().includes('saving')) {
-          resolve("To save more money, try the 50/30/20 rule: 50% for needs, 30% for wants, and 20% for savings. Automate your savings by setting up automatic transfers to a separate account on payday. Also, track your expenses to identify areas where you can cut back.");
-        } else if (userMessage.toLowerCase().includes('invest') || userMessage.toLowerCase().includes('investment')) {
-          resolve("For beginners, consider starting with index funds or ETFs that track the market. They offer diversification and lower fees. You might also look into robo-advisors which automatically manage your investments. Remember to invest for the long term and don't try to time the market.");
-        } else if (userMessage.toLowerCase().includes('budget') || userMessage.toLowerCase().includes('spending')) {
-          resolve("Creating a budget is key to financial health. Track your income and expenses, categorize spending, and set realistic goals. There are many apps that can help automate this process. Review your budget regularly and adjust as needed. Remember that a budget isn't restrictive - it's a plan that gives you control!");
-        } else if (userMessage.toLowerCase().includes('debt') || userMessage.toLowerCase().includes('loan')) {
-          resolve("When tackling debt, consider either the avalanche method (paying off highest interest debt first) or the snowball method (paying off smallest debts first). Make minimum payments on all debts, then put extra money toward your target debt. Consider consolidating high-interest debts to lower your overall interest rate.");
-        } else if (userMessage.toLowerCase().includes('emergency') || userMessage.toLowerCase().includes('fund')) {
-          resolve("An emergency fund is money set aside for unexpected expenses like medical bills or car repairs. Aim to save 3-6 months of living expenses. Start small if you need to - even $500-$1000 can help with minor emergencies. Keep this money in a separate, easily accessible account like a high-yield savings account.");
-        } else {
-          resolve("That's a great question about personal finance. While I'm just a demo chatbot, a fully implemented version would search the web for the most up-to-date information to help you make informed financial decisions. Is there anything specific about your finances you'd like to know more about?");
-        }
-      }, 1500);
-    });
+  const searchWithSerper = async (query: string): Promise<string> => {
+    try {
+      // This would be better handled through a backend or Supabase Edge Function
+      // In a production app, this key would be stored in a secure environment
+      const SERPER_API_KEY = "YOUR_SERPER_API_KEY"; // Replace with actual key or env variable
+      
+      const response = await fetch('https://google.serper.dev/search', {
+        method: 'POST',
+        headers: {
+          'X-API-KEY': SERPER_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          q: `${query} financial advice india`,
+          gl: 'in', // Set region to India
+          hl: 'en' // Language: English
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch search results');
+      }
+
+      const data: SerperResponse = await response.json();
+      
+      // Extract answer from answerBox if available
+      if (data.answerBox && (data.answerBox.answer || data.answerBox.snippet)) {
+        return data.answerBox.answer || data.answerBox.snippet || '';
+      }
+      
+      // Otherwise, compile info from organic results
+      if (data.organic && data.organic.length > 0) {
+        let result = "Based on my search, here's what I found:\n\n";
+        
+        // Take the first 2-3 results for a concise answer
+        const topResults = data.organic.slice(0, 2);
+        
+        topResults.forEach(item => {
+          result += `${item.snippet}\n\n`;
+        });
+        
+        result += "I hope this helps with your question about personal finance!";
+        return result;
+      }
+      
+      return "I couldn't find specific information about that. Could you try rephrasing your question?";
+    } catch (error) {
+      console.error('Error searching with Serper:', error);
+      return generateFallbackResponse(query);
+    }
+  };
+
+  const generateFallbackResponse = (userMessage: string): string => {
+    // Fallback responses when API fails
+    if (userMessage.toLowerCase().includes('save') || userMessage.toLowerCase().includes('saving')) {
+      return "To save more money, try the 50/30/20 rule: 50% for needs, 30% for wants, and 20% for savings. Automate your savings by setting up automatic transfers to a separate account on payday. Also, track your expenses to identify areas where you can cut back.";
+    } else if (userMessage.toLowerCase().includes('invest') || userMessage.toLowerCase().includes('investment')) {
+      return "For beginners in India, consider starting with index funds or ETFs that track the Nifty or Sensex. For tax benefits, look into ELSS funds which have a 3-year lock-in but offer tax deductions under Section 80C. Platforms like Zerodha or Groww make investing accessible for young adults.";
+    } else if (userMessage.toLowerCase().includes('budget') || userMessage.toLowerCase().includes('spending')) {
+      return "Creating a budget is key to financial health. For a 22-year-old in India, track income from internships or entry-level jobs, categorize spending into essentials like rent, food, and transportation, then set realistic goals. Apps like ET Money or Walnut can help automate this process.";
+    } else if (userMessage.toLowerCase().includes('debt') || userMessage.toLowerCase().includes('loan')) {
+      return "When tackling debt, consider either the avalanche method (paying off highest interest debt first) or the snowball method (paying off smallest debts first). For education loans in India, remember that interest paid is tax-deductible under Section 80E without any upper limit.";
+    } else if (userMessage.toLowerCase().includes('emergency') || userMessage.toLowerCase().includes('fund')) {
+      return "As a young professional in India, aim to build an emergency fund covering 3-6 months of expenses. Start with ₹50,000-₹1,00,000 for immediate emergencies. Keep this money in a separate, easily accessible account like a high-yield savings account or liquid fund for better returns than a regular savings account.";
+    } else {
+      return "That's a great question about personal finance. I'd like to search for the most up-to-date information to help you, but I'm currently using my offline knowledge. For the most accurate advice tailored to your situation in India, consider consulting with a financial advisor.";
+    }
   };
 
   const handleSendMessage = async () => {
@@ -84,8 +144,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     
     try {
-      // Generate bot response
-      const botResponse = await generateBotResponse(userMessage.text);
+      // Generate bot response using Serper API
+      const botResponse = await searchWithSerper(userMessage.text);
       
       // Add bot response
       const botMessage: Message = {
@@ -108,6 +168,12 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
       };
       
       setMessages((prev) => [...prev, errorMessage]);
+      
+      toast({
+        title: "Connection error",
+        description: "Could not retrieve financial information. Using offline mode.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }

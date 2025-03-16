@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   LineChart, 
@@ -22,7 +21,6 @@ import {
 } from 'recharts';
 import { Calendar, TrendingUp, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
-// Mock prediction data
 const predictionData = {
   nextMonth: {
     predictedExpenses: 10250,
@@ -43,7 +41,6 @@ const predictionData = {
 const AnalyticsView = () => {
   const [timeframe, setTimeframe] = useState('3month');
   
-  // Mock data
   const monthlyData = {
     '3month': [
       { month: 'Mar', income: 24000, expenses: 8200, savings: 15800 },
@@ -103,7 +100,6 @@ const AnalyticsView = () => {
     { subject: 'Weekday', amount: 5780 },
   ];
 
-  // Helper function to format currency in Indian Rupees
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -115,7 +111,6 @@ const AnalyticsView = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold mb-1">Financial Analytics</h2>
@@ -134,7 +129,6 @@ const AnalyticsView = () => {
         </div>
       </div>
 
-      {/* Income, Expenses and Savings Trends */}
       <div className="dashboard-card">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-medium">Financial Overview</h3>
@@ -154,12 +148,12 @@ const AnalyticsView = () => {
               <YAxis 
                 tick={{ fill: '#94a3b8' }} 
                 axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                tickFormatter={(value) => `$${value}`}
+                tickFormatter={(value) => `₹${value}`}
               />
               <Tooltip 
                 contentStyle={{ backgroundColor: '#1e293b', borderColor: 'rgba(255,255,255,0.1)' }}
                 itemStyle={{ color: '#fff' }}
-                formatter={(value) => [`$${value}`, '']}
+                formatter={(value) => [`₹${value}`, '']}
                 labelStyle={{ color: '#94a3b8' }}
               />
               <Legend iconType="circle" />
@@ -195,9 +189,7 @@ const AnalyticsView = () => {
         </div>
       </div>
 
-      {/* Expense Categories and Predictions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left column - Expense distribution */}
         <div className="dashboard-card">
           <h3 className="text-lg font-medium mb-6">Expense Distribution</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -242,7 +234,6 @@ const AnalyticsView = () => {
           </div>
         </div>
 
-        {/* Right column - ML Prediction */}
         <div className="dashboard-card">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-medium">Next Month Prediction</h3>
@@ -307,9 +298,7 @@ const AnalyticsView = () => {
         </div>
       </div>
 
-      {/* Additional charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Spending Habits */}
         <div className="dashboard-card">
           <h3 className="text-lg font-medium mb-6">Spending Habits</h3>
           <div className="h-72">
@@ -335,7 +324,6 @@ const AnalyticsView = () => {
           </div>
         </div>
 
-        {/* Savings Trend */}
         <div className="dashboard-card">
           <h3 className="text-lg font-medium mb-6">Savings Trend</h3>
           <div className="h-72">
@@ -349,12 +337,12 @@ const AnalyticsView = () => {
                 <YAxis 
                   tick={{ fill: '#94a3b8' }} 
                   axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) => `₹${value}`}
                 />
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#1e293b', borderColor: 'rgba(255,255,255,0.1)' }}
                   itemStyle={{ color: '#fff' }}
-                  formatter={(value) => [`$${value}`, 'Savings']}
+                  formatter={(value) => [`₹${value}`, 'Savings']}
                   labelStyle={{ color: '#94a3b8' }}
                 />
                 <Bar 
