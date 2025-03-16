@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
@@ -216,3 +215,50 @@ export const SignUpForm = () => {
     </div>
   );
 };
+
+interface AuthFormsProps {
+  formType?: 'login' | 'signup';
+}
+
+const AuthForms: React.FC<AuthFormsProps> = ({ formType = 'login' }) => {
+  const [currentForm, setCurrentForm] = useState<'login' | 'signup'>(formType);
+  
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-fiscal-purple-900 p-4">
+      <div className="w-full max-w-md">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-white mb-2">Fiscal Freshers</h1>
+          <p className="text-gray-400">Your personal finance tracking assistant</p>
+        </div>
+        
+        {currentForm === 'login' ? <SignInForm /> : <SignUpForm />}
+        
+        <div className="mt-6 text-center">
+          {currentForm === 'login' ? (
+            <p className="text-gray-400 text-sm">
+              Don't have an account?{' '}
+              <button 
+                onClick={() => setCurrentForm('signup')}
+                className="text-fiscal-purple-400 hover:text-fiscal-purple-300 transition-colors"
+              >
+                Sign up
+              </button>
+            </p>
+          ) : (
+            <p className="text-gray-400 text-sm">
+              Already have an account?{' '}
+              <button 
+                onClick={() => setCurrentForm('login')}
+                className="text-fiscal-purple-400 hover:text-fiscal-purple-300 transition-colors"
+              >
+                Sign in
+              </button>
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AuthForms;
