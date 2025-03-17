@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,13 +10,12 @@ import Layout from "./components/layout/Layout";
 import Dashboard from "./components/dashboard/Dashboard";
 import AnalyticsView from "./components/analytics/AnalyticsView";
 import TransactionForm from "./components/transactions/TransactionForm";
-import { AuthForms } from "./components/auth/AuthForms";
+import AuthForms from "./components/auth/AuthForms";
 import Settings from "./pages/Settings";
 import { Plus } from "lucide-react";
 
 const queryClient = new QueryClient();
 
-// Define a transaction type that will be used across the app
 export interface Transaction {
   id: string;
   type: 'expense' | 'income';
@@ -27,7 +25,6 @@ export interface Transaction {
   date: string;
 }
 
-// Create a context for transactions
 type TransactionContextType = {
   transactions: Transaction[];
   addTransaction: (transaction: Omit<Transaction, 'id'>) => void;
@@ -38,7 +35,6 @@ type TransactionContextType = {
 
 export const TransactionContext = createContext<TransactionContextType | null>(null);
 
-// Create a hook to use transaction context
 export const useTransactions = () => {
   const context = useContext(TransactionContext);
   if (!context) {
@@ -48,7 +44,6 @@ export const useTransactions = () => {
 };
 
 const App = () => {
-  // Mock initial transactions
   const [transactions, setTransactions] = useState<Transaction[]>([
     {
       id: '1',
@@ -81,7 +76,6 @@ const App = () => {
   const openTransactionForm = () => setIsTransactionFormOpen(true);
   const closeTransactionForm = () => setIsTransactionFormOpen(false);
   
-  // Function to add a new transaction
   const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
     const newTransaction = {
       ...transaction,
@@ -90,7 +84,6 @@ const App = () => {
     
     setTransactions(prev => [...prev, newTransaction]);
     
-    // After adding a transaction, refetch queries to update UI
     queryClient.invalidateQueries();
   };
 
@@ -112,11 +105,9 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               
-              {/* Auth Routes */}
               <Route path="/login" element={<AuthForms formType="login" />} />
               <Route path="/signup" element={<AuthForms formType="signup" />} />
               
-              {/* App Routes */}
               <Route path="/home" element={<Layout><Dashboard /></Layout>} />
               <Route path="/transactions" element={
                 <Layout>
@@ -180,7 +171,6 @@ const App = () => {
               <Route path="/analytics" element={<Layout><AnalyticsView /></Layout>} />
               <Route path="/settings" element={<Layout><Settings /></Layout>} />
               
-              {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
