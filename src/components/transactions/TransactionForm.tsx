@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
-import { X, Save, DollarSign, Calendar, Tag, FileText, Plus, Minus } from 'lucide-react';
+import { X, Save, Calendar, Tag, FileText, Plus, Minus } from 'lucide-react';
+import { useTransactions } from '@/App';
 
 interface TransactionFormProps {
   isOpen: boolean;
@@ -15,10 +16,19 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ isOpen, onClose }) =>
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const { toast } = useToast();
+  const { addTransaction } = useTransactions();
 
   const categories = {
     expense: ['Rent/PG', 'Food & Dining', 'Transport', 'Entertainment', 'Shopping', 'Mobile & Internet', 'Education', 'Subscriptions', 'Health', 'Other'],
     income: ['Salary/Stipend', 'Freelance', 'Pocket Money', 'Gifts', 'Scholarships', 'Other']
+  };
+
+  const resetForm = () => {
+    setType('expense');
+    setAmount('');
+    setCategory('');
+    setDescription('');
+    setDate(new Date().toISOString().split('T')[0]);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -34,10 +44,10 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ isOpen, onClose }) =>
       return;
     }
 
-    // In a real app, you would save this to your database
-    console.log({
+    // Add the transaction using context
+    addTransaction({
       type,
-      amount: type === 'expense' ? -parseFloat(amount) : parseFloat(amount),
+      amount: parseFloat(amount),
       category,
       description,
       date,
@@ -48,6 +58,7 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ isOpen, onClose }) =>
       description: `Your ${type} has been recorded successfully.`,
     });
 
+    resetForm();
     onClose();
   };
 
