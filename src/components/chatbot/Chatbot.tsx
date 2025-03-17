@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Bot, User, ChevronDown, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -39,6 +40,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [minimized, setMinimized] = useState(false);
+  const [apiKey, setApiKey] = useState<string | null>(localStorage.getItem('serperApiKey'));
+  const [showApiKeyInput, setShowApiKeyInput] = useState(!apiKey);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -61,14 +64,14 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
 
   const searchWithSerper = async (query: string): Promise<string> => {
     try {
-      // This would be better handled through a backend or Supabase Edge Function
-      // In a production app, this key would be stored in a secure environment
-      const SERPER_API_KEY = "YOUR_SERPER_API_KEY"; // Replace with actual key or env variable
+      if (!apiKey) {
+        throw new Error('No API key provided');
+      }
       
       const response = await fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: {
-          'X-API-KEY': SERPER_API_KEY,
+          'X-API-KEY': apiKey,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -79,7 +82,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch search results');
+        const errorData = await response.text();
+        console.error('Serper API error:', errorData);
+        throw new Error(`Failed to fetch search results: ${response.status} ${response.statusText}`);
       }
 
       const data: SerperResponse = await response.json();
@@ -128,8 +133,25 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleSaveApiKey = () => {
+    if (apiKey) {
+      localStorage.setItem('serperApiKey', apiKey);
+      setShowApiKeyInput(false);
+      toast({
+        title: "API Key saved",
+        description: "Your Serper API key has been saved for this session.",
+      });
+    }
+  };
+
   const handleSendMessage = async () => {
     if (!input.trim()) return;
+    
+    // If no API key is set, show the API key input
+    if (!apiKey) {
+      setShowApiKeyInput(true);
+      return;
+    }
     
     // Add user message
     const userMessage: Message = {
@@ -235,6 +257,40 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
               </button>
             </div>
           </div>
+          
+          {/* API Key Modal */}
+          {showApiKeyInput && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 p-4">
+              <div className="bg-sidebar rounded-lg p-6 w-full max-w-sm">
+                <h3 className="text-lg font-semibold mb-4">Enter Serper API Key</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  To enable real-time financial information, please enter your Serper API key. 
+                  You can get one from <a href="https://serper.dev" target="_blank" rel="noopener noreferrer" className="text-fiscal-purple-400 underline">serper.dev</a>.
+                </p>
+                <input
+                  type="text"
+                  value={apiKey || ''}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="Enter your Serper API key"
+                  className="w-full p-2 mb-4 bg-sidebar-accent border border-white/10 rounded-md text-white"
+                />
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={() => setShowApiKeyInput(false)}
+                    className="px-4 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-600 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveApiKey}
+                    className="px-4 py-2 rounded-md bg-fiscal-purple-600 text-white hover:bg-fiscal-purple-500 transition-colors"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           
           {/* Chat messages */}
           <div className="flex-1 p-4 space-y-4 overflow-y-auto h-[calc(100%-144px)]">
