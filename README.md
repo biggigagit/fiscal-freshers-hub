@@ -1,69 +1,62 @@
-# Welcome to your Lovable project
 
-## Project info
+# Fiscal Freshers Hub: Financial Management for Young Adults in India
 
-**URL**: https://lovable.dev/projects/94af5941-0090-446b-9360-09d7a82cd86d
+## Slide 1: Overview and Purpose
 
-## How can I edit this code?
+**Fiscal Freshers: Smart Finance for Modern Youth**
 
-There are several ways of editing your application.
+- **Target Audience**: Students and young professionals in India
+- **Core Mission**: Simplifying personal finance management through intuitive technology
+- **Key Problem Solved**: Addressing financial literacy gaps among young adults
+- **Design Philosophy**: Modern, accessible interface with India-specific features
+- **Value Proposition**: All-in-one platform for tracking expenses, visualizing spending patterns, and gaining financial knowledge
 
-**Use Lovable**
+## Slide 2: Key Features and Technology
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/94af5941-0090-446b-9360-09d7a82cd86d) and start prompting.
+**Powerful Features with Modern Technology**
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Transaction Management**: 
+  - Categorize income and expenses
+  - Track spending patterns with ₹ currency support
+  - Visualize financial data through interactive charts
 
-**Use your preferred IDE**
+- **Smart Dashboard**: 
+  - Real-time balance updates
+  - Category-based spending analysis
+  - Income vs. expense comparison
+  - Recent transaction history
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **AI-Powered Financial Assistant**:
+  - Serper API integration for real-time financial information
+  - Personalized financial advice and explanations
+  - Support for India-specific financial topics
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **Technology Stack**:
+  - React, TypeScript, Tailwind CSS
+  - Responsive design for all devices
+  - Modern UI with glassmorphism effects
 
-Follow these steps:
+## Slide 3: User Experience and Benefits
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+**Simple, Educational, Empowering**
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- **Simple Experience**:
+  - Intuitive navigation through financial data
+  - One-click transaction recording
+  - Mobile-first responsive design
+  - Distraction-free interface
 
-# Step 3: Install the necessary dependencies.
-npm i
+- **Educational Components**:
+  - AI chatbot explains financial concepts
+  - Visual representation of spending habits
+  - Suggestions for better financial decisions
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- **Empowering Benefits**:
+  - Build financial discipline early in career
+  - Make informed spending decisions
+  - Prepare for financial independence
+  - Develop lifelong money management skills
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/94af5941-0090-446b-9360-09d7a82cd86d) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+*Fiscal Freshers: Helping India's youth secure their financial future, one transaction at a time.*
